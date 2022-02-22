@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [currentPostId]) // when clear after create or update should re-fetch
+  }, [currentPostId, dispatch]) // when clear after create or update should re-fetch
 
   return (
 <Container maxidth="lg">
