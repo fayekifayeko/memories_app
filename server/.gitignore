@@ -1,0 +1,3 @@
+node_modules
+
+# don't add .env when push to Heroku(just when push to public git) as it needs the file

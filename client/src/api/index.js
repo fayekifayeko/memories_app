@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const postApiUrl = 'http://localhost:5000/posts';
+const postApiUrl = 'http://localhost:5000/posts'; // should be changed to Prod url later
 
 export const fetchPosts = () => axios.get(postApiUrl);
 export const createPost = (newPost) => axios.post(postApiUrl, newPost);
