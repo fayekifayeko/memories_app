@@ -1,0 +1,42 @@
+// @ts-nocheck
+import React, { useState, useEffect } from "react";
+import { Container, Grow, Grid } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+
+import { getPosts } from "../../actions/posts";
+import Posts from "../Posts/Posts";
+import Form from "../Form/Form";
+
+const Home = () => {
+  const dispatch = useDispatch();
+  const [currentPostId, setCurrentPostId] = useState(null);
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [currentPostId, dispatch]); // when clear after create or update should re-fetch
+
+  return (
+    <Grow in>
+      <Container>
+        <Grid
+          container
+          justify="space-between"
+          spacing={3}
+          alignItems="stretch"
+        >
+          <Grid item xs="12" sm="8">
+            <Posts setCurrentPostId={setCurrentPostId} />
+          </Grid>
+          <Grid item xs="12" sm="4">
+            <Form
+              currentPostId={currentPostId}
+              setCurrentPostId={setCurrentPostId}
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    </Grow>
+  );
+};
+
+export default Home;
