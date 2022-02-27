@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import {
   Avatar,
@@ -15,15 +16,29 @@ import Icon from "./Icon.js";
 import { useDispatch } from "react-redux";
 import { AUTH } from "../constants/actions.js";
 import { useHistory } from "react-router-dom";
+import { signin, signup } from "../actions/auth.js";
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    password: '',
+    confirmPassword: '',
+    email: ''
+  });
+
   const dispatch = useDispatch();
   const history = useHistory();
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault() // not to refresh the page after click submit
+    isSignup ? dispatch(signup(formData, history)) : dispatch(signin(formData, history));
+  };
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const switchMode = () => {
@@ -113,6 +128,7 @@ const Auth = () => {
                 onClick={props.onClick}
                 startIcon={<Icon />}
                 variant="contained"
+                fullWidth
               >
                 Google Sign In
               </Button>
