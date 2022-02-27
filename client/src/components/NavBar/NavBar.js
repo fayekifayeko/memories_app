@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
-import memories from "./images/memories.png";
+import memories from "../../images/memories.png";
 import useStyles from "./styles.js";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { LOGOUT } from "../../constants/actions";
