@@ -1,4 +1,6 @@
 import express from 'express'
+import {auth} from '../middleware/auth.js';
+
 import {
     getPosts,
     createPost,
@@ -6,7 +8,6 @@ import {
     deletePost,
     likePost,
 } from '../controllers/posts.js'
-import {auth} from '../middleware/auth';
 
 const router = express.Router()
 
