@@ -3,7 +3,7 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import postRoutes from './routes/posts.js'
-import authRoutes from './routes/user.js'
+import usersRoutes from './routes/user.js'
 
 import dotenv from 'dotenv'
 
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors());
 
 app.use('/posts', postRoutes); // should be after cors
-app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
 
 app.get('/', (req, res) => {
     // For Heruko
