@@ -23,21 +23,23 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    password: '',
-    confirmPassword: '',
-    email: ''
+    firstName: "",
+    lastName: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
   });
 
   const dispatch = useDispatch();
   const history = useHistory();
   const handleSubmit = (e) => {
-    e.preventDefault() // not to refresh the page after click submit
-    isSignup ? dispatch(signup(formData, history)) : dispatch(signin(formData, history));
+    e.preventDefault(); // not to refresh the page after click submit
+    isSignup
+      ? dispatch(signup(formData, history))
+      : dispatch(signin(formData, history));
   };
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleShowPassword = () => setShowPassword(!showPassword);
 
