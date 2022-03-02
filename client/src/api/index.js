@@ -2,6 +2,16 @@ import axios from "axios";
 
 const API = axios.create({ baseURL: "http://localhost:5000" });
 
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+
+  return req;
+});
+
 //const postApiUrl = "http://localhost:5000/posts"; // should be changed to Prod url later
 
 // export const fetchPosts = () => axios.get(postApiUrl);

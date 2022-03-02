@@ -10,13 +10,13 @@ import { useSelector } from "react-redux";
 const Form = ({ currentPostId, setCurrentPostId }) => {
   const classes = useStyles();
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
   const post = useSelector((state) =>
     currentPostId
       ? state.posts.find((item) => item._id === currentPostId)
@@ -27,9 +27,11 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     e.preventDefault(); // not refresh the browser.
 
     if (currentPostId) {
-      dispatch(updatePost(currentPostId, postData));
+      dispatch(
+        updatePost(currentPostId, { ...postData, name: user?.profile?.name })
+      );
     } else {
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, name: user?.profile?.name }));
     }
 
     clear();
@@ -38,7 +40,6 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
   const clear = () => {
     setCurrentPostId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
@@ -52,6 +53,17 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     }
   }, [post]);
 
+  if (!user?.profile) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please, sign in to be able to create your own memories and like others
+          memories
+        </Typography>
+      </Paper>
+    );
+  }
+
   return (
     <Paper className={classes.paper}>
       <form
@@ -63,16 +75,6 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
         <Typography variant="h6">
           {currentPostId ? "Updating a Memory" : "Creating a Memory"}
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
         <TextField
           name="title"
           variant="outlined"
@@ -96,7 +98,7 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
         <TextField
           name="tags"
           variant="outlined"
-          label="Tags (coma separated)"
+          label="Tags (comma separated)"
           fullWidth
           value={postData.tags}
           onChange={(e) =>
