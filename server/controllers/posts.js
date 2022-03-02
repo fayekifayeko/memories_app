@@ -12,7 +12,11 @@ export const getPosts = async (req, res) => {
 }
 export const createPost = async (req, res) => {
     const post = req.body
-    const newPost = new PostMessage({...post, creator: req.userId, createdAt: new Date().toISOString()})
+    const newPost = new PostMessage({
+        ...post,
+        creator: req.userId,
+        createdAt: new Date().toISOString(),
+    })
 
     try {
         await newPost.save()
@@ -56,25 +60,29 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
     const { id: _id } = req.params
-    if(!req.userId) return res.status(401).json({message: 'You are not authenticated'});
-
-    const index = PostMessage.likes.findIndex(item => item === String(req.userId));
+    if (!req.userId)
+        return res.status(401).json({ message: 'You are not authenticated' })
 
     if (!mongoose.Types.ObjectId.isValid(_id))
         return res.status(404).send('No post with this id')
     try {
-        const post = await PostMessage.findById(_id);
-        
-    if(index === -1) { // like
-        post.likes.push(req.userId);
-    } else { // dislike
-        post.likes.filter(item => item !== String(req.userId));
-    }
-        const updatedPost = await PostMessage.findByIdAndUpdate(
-            _id,
-            post,
-            {new: true}
+        const post = await PostMessage.findById(_id)
+        const index = post.likes.findIndex(
+            (item) => item === String(req.userId)
         )
+
+        if (index === -1) {
+            // like
+            post.likes.push(req.userId)
+        } else {
+            // dislike
+            post.likes = post.likes.filter(
+                (item) => item !== String(req.userId)
+            )
+        }
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+            new: true,
+        })
 
         res.status(201).json(updatedPost)
     } catch (error) {

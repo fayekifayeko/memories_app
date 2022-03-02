@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
         type: String,
         require: true,
     },
-    id: String
+    id: String,
 })
 
 const User = mongoose.model('User', userSchema)

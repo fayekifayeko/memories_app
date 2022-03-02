@@ -13,10 +13,10 @@ dotenv.config()
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors());
+app.use(cors())
 
-app.use('/posts', postRoutes); // should be after cors
-app.use('/users', usersRoutes);
+app.use('/posts', postRoutes) // should be after cors
+app.use('/users', usersRoutes)
 
 app.get('/', (req, res) => {
     // For Heruko
