@@ -1,11 +1,12 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
-import { Container, Grow, Grid } from "@material-ui/core";
+import { Container, Grow, Grid, Paper } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
 import { getPosts } from "../actions/posts";
 import Posts from "../components/Posts/Posts";
 import Form from "../components/Form/Form";
+import Paginate from "../components/paginate/pagination";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,9 @@ const Home = () => {
               currentPostId={currentPostId}
               setCurrentPostId={setCurrentPostId}
             />
+            <Paper elevation={6}>
+              <Paginate />
+            </Paper>
           </Grid>
         </Grid>
       </Container>
