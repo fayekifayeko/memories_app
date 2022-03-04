@@ -89,3 +89,16 @@ export const likePost = async (req, res) => {
         res.status(409).json({ message: error.message })
     }
 }
+
+export const getPostsBySearch = async (req, res) => {
+    const {searchTerm, tags} = req.query
+    try {
+        const title = new RegExp(searchTerm, "i"); // ignore case
+        console.log(tags.split(','))
+
+        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ]});
+        res.json({data: posts})
+    } catch (error) {
+        res.status(409).json({ message: error.message })
+    }
+}
