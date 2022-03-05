@@ -16,13 +16,17 @@ API.interceptors.request.use((req) => {
 
 // export const fetchPosts = () => axios.get(postApiUrl);
 
-export const fetchPosts = () => API.get("/posts");
+export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 export const createPost = (newPost) => API.post("/posts", newPost);
 export const updatePost = (id, post) => API.patch(`/posts/${id}`, post);
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
-export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchTerm=${searchQuery.searchTerm || 'none'}&tags=${searchQuery.tags || ['none']}`);
+export const fetchPostsBySearch = (searchQuery) =>
+  API.get(
+    `/posts/search?searchTerm=${searchQuery.searchTerm || "none"}&tags=${
+      searchQuery.tags || ["none"]
+    }`
+  );
 
 export const signin = (formData) => API.post(`/users/signin`, formData);
 export const signup = (formData) => API.post(`/users/signup`, formData);
-

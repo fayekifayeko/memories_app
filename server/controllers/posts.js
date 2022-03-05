@@ -3,9 +3,22 @@ import PostMessage from '../models/postMessage.js'
 
 export const getPosts = async (req, res) => {
     try {
-        const postMessages = await PostMessage.find()
+        const { page } = req.query
+        
+        const postsPerPage = 2
+        const skipNumber = (Number(page) - 1) * postsPerPage
+        const total = await PostMessage.countDocuments({})
 
-        res.status(200).json(postMessages)
+        const posts = await PostMessage.find()
+            .sort({ _id: -1 })
+            .limit(postsPerPage)
+            .skip(skipNumber)
+
+        res.status(200).json({
+            data: posts,
+            numberOfPages: Math.ceil((total/postsPerPage)),
+            currentPage: Number(page),
+        })
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
@@ -91,13 +104,13 @@ export const likePost = async (req, res) => {
 }
 
 export const getPostsBySearch = async (req, res) => {
-    const {searchTerm, tags} = req.query
+    const { searchTerm, tags } = req.query
     try {
-        const title = new RegExp(searchTerm, "i"); // ignore case
-        console.log(tags.split(','))
-
-        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ]});
-        res.json({data: posts})
+        const title = new RegExp(searchTerm, 'i') // ignore case
+        const posts = await PostMessage.find({
+            $or: [{ title }, { tags: { $in: tags.split(',') } }],
+        })
+        res.json({ data: posts })
     } catch (error) {
         res.status(409).json({ message: error.message })
     }

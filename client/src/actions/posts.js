@@ -1,10 +1,22 @@
 import * as api from "../api";
-import { FETCH_ALL, CREATE, LIKE, DELETE, UPDATE, FETCH_ALL_BY_SEARCH } from "../constants/actions";
+import {
+  FETCH_ALL,
+  CREATE,
+  LIKE,
+  DELETE,
+  UPDATE,
+  FETCH_ALL_BY_SEARCH,
+  START_LOADING,
+  END_LOADING,
+} from "../constants/actions";
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
   try {
-    const { data } = await api.fetchPosts();
+    dispatch({ type: START_LOADING });
+
+    const { data } = await api.fetchPosts(page);
     dispatch({ type: FETCH_ALL, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (err) {
     console.log(err);
   }
@@ -12,9 +24,11 @@ export const getPosts = () => async (dispatch) => {
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data: data } = await api.fetchPostsBySearch(searchQuery);
-    console.log(data)
     dispatch({ type: FETCH_ALL_BY_SEARCH, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (err) {
     console.log(err);
   }
@@ -22,8 +36,11 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 
 export const createPost = (newPost) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.createPost(newPost);
     dispatch({ type: CREATE, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (err) {
     console.log(err);
   }

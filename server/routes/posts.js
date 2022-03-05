@@ -7,7 +7,7 @@ import {
     updatePost,
     deletePost,
     likePost,
-    getPostsBySearch
+    getPostsBySearch,
 } from '../controllers/posts.js'
 
 const router = express.Router()

@@ -8,8 +8,11 @@ import { CircularProgress, Grid } from "@material-ui/core";
 
 const Posts = ({ setCurrentPostId }) => {
   const classes = useStyles();
-  const posts = useSelector((state) => state.posts);
-  return !posts ? (
+  const { posts, isLoading } = useSelector((state) => state.posts);
+  if (!isLoading && !posts.length)
+    return <h1> There are no posts to display!</h1>;
+
+  return isLoading ? (
     <CircularProgress />
   ) : (
     <Grid

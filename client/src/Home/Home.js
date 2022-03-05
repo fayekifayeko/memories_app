@@ -1,6 +1,14 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from "@material-ui/core";
+import {
+  Container,
+  Grow,
+  Grid,
+  Paper,
+  AppBar,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
 import { getPosts, getPostsBySearch } from "../actions/posts";
@@ -15,41 +23,45 @@ const Home = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [currentPostId, setCurrentPostId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [tags, setTags] = useState([]);
-const classes = useStyles();
+  const classes = useStyles();
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
-  }
+  };
 
   const query = useQuery();
-  const page = query.get('page') || 1;
-  const searchQuery = query.get('searchQuery');
+  const page = query.get("page") || 1;
+  const searchQuery = query.get("searchQuery");
 
-  useEffect(() => {
+  /*  useEffect(() => {
     dispatch(getPosts());
   }, [currentPostId, dispatch]); // when clear after create or update should re-fetch
-
+ */
   const handleKeyPress = (e) => {
-    if(e.keyCode === 13) {
+    if (e.keyCode === 13) {
       handleSearch();
     }
-  }
+  };
   const handleAdd = (item) => {
-    setTags([...tags, item])
-  }
+    setTags([...tags, item]);
+  };
   const handleSearch = () => {
-    if(searchTerm.trim() || tags.length>0) {
-      dispatch(getPostsBySearch({searchTerm, tags: tags.join(',')})) // tags is array so we need to stringify it to be sent as a query param
-      history.push(`/posts/search?searchTerm=${searchTerm || 'none'}&tags=${tags.join(',')}`) // you can copy the search url and send it to your friend to search quickly
+    if (searchTerm.trim() || tags.length > 0) {
+      dispatch(getPostsBySearch({ searchTerm, tags: tags.join(",") })); // tags is array so we need to stringify it to be sent as a query param
+      history.push(
+        `/posts/search?searchTerm=${searchTerm || "none"}&tags=${tags.join(
+          ","
+        )}`
+      ); // you can copy the search url and send it to your friend to search quickly
     } else {
-      history.push('/')
+      history.push("/");
     }
-  }
+  };
 
-  const handleDelete= (item) => {
-    setTags(tags.filter(tag => tag !== item))
-  }
+  const handleDelete = (item) => {
+    setTags(tags.filter((tag) => tag !== item));
+  };
 
   return (
     <Grow in>
@@ -65,33 +77,51 @@ const classes = useStyles();
             <Posts setCurrentPostId={setCurrentPostId} />
           </Grid>
           <Grid item xs="12" sm="6" md="3">
-            <AppBar className={classes.appBarSearch} position="static" color="inherit">
-              <TextField 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={handleKeyPress}
-              name="search"
-              variant="outlined"
-              fullWidth
-              label="Search memories"
+            <AppBar
+              className={classes.appBarSearch}
+              position="static"
+              color="inherit"
+            >
+              <TextField
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyPress={handleKeyPress}
+                name="search"
+                variant="outlined"
+                fullWidth
+                label="Search memories"
               />
-              <ChipInput 
-              value={tags}
-              onAdd={handleAdd}
-              onDelete={handleDelete}
-              label="Search tags"
-              variant="outlined"
-              style={{margin: '10px 0'}}
+              <ChipInput
+                value={tags}
+                onAdd={handleAdd}
+                onDelete={handleDelete}
+                label="Search tags"
+                variant="outlined"
+                style={{ margin: "10px 0" }}
               />
-              <Button onClick={handleSearch} variant="contained" color="primary" className={classes.searchButton}>Search</Button>
+              <Button
+                onClick={handleSearch}
+                variant="contained"
+                color="primary"
+                className={classes.searchButton}
+              >
+                Search
+              </Button>
             </AppBar>
             <Form
               currentPostId={currentPostId}
               setCurrentPostId={setCurrentPostId}
             />
-            <Paper elevation={6}>
-              <Paginate />
-            </Paper>
+            {/* // no paginate when searching */}
+            {!searchTerm && !tags?.length && (
+              <Paper elevation={6}>
+                <Paginate
+                  elevation={6}
+                  className={classes.Pagination}
+                  page={page}
+                />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>
