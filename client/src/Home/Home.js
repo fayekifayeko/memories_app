@@ -32,7 +32,7 @@ const Home = () => {
 
   const query = useQuery();
   const page = query.get("page") || 1;
-  // const searchQuery = query.get("searchQuery");
+  const searchQuery = query.get("searchQuery");
 
   /*  useEffect(() => {
     dispatch(getPosts());

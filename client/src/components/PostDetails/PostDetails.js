@@ -96,7 +96,7 @@ const PostDetails = () => {
             ({ title, name, message, likes, selectedFile, _id }) => (
               <div
                 style={{ margin: "20px", cursor: "pointer" }}
-                onClick={(_id) => history.push(`/posts/${_id}`)}
+                onClick={()=>history.push(`/posts/${_id}`)}
                 key={_id}
               >
                 <Typography gutterBottom variant="h6">

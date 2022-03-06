@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import useStyles from "./styles.js";
 import {
@@ -17,7 +16,8 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deletePost, likePost } from "../../../actions/posts";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
+
 
 const Post = ({ post, setCurrentPostId }) => {
   const classes = useStyles();
@@ -51,7 +51,9 @@ const Post = ({ post, setCurrentPostId }) => {
       </>
     );
   };
-  const openPostDetails = () => history.push(`posts/${post._id}`);
+  const openPostDetails = () => {
+    history.push(`/posts/${post._id}`);
+  }
 
   return (
     <Card className={classes.card} elevation={6}>
