@@ -7,6 +7,7 @@ import {
   FETCH_ALL_BY_SEARCH,
   START_LOADING,
   END_LOADING,
+  FETCH_POST,
 } from "../constants/actions";
 
 /* export default (state = [], action) => {
@@ -45,6 +46,10 @@ export default (state = { posts: [], isLoading: true }, action) => {
 
     case FETCH_ALL_BY_SEARCH:
       return { ...state, posts: action.payload.data };
+
+    case FETCH_POST: {
+      return { ...state, post: action.payload };
+    }
 
     case CREATE:
       return { ...state, posts: [...state.posts, action.payload] };

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grow,
@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
-import { getPosts, getPostsBySearch } from "../actions/posts";
+import { getPostsBySearch } from "../actions/posts";
 import Posts from "../components/Posts/Posts";
 import Form from "../components/Form/Form";
 import Paginate from "../components/paginate/pagination";
@@ -32,7 +32,7 @@ const Home = () => {
 
   const query = useQuery();
   const page = query.get("page") || 1;
-  const searchQuery = query.get("searchQuery");
+  // const searchQuery = query.get("searchQuery");
 
   /*  useEffect(() => {
     dispatch(getPosts());

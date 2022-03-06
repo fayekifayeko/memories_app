@@ -6,6 +6,7 @@ import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const Form = ({ currentPostId, setCurrentPostId }) => {
   const classes = useStyles();
@@ -16,10 +17,11 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     selectedFile: "",
   });
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
   const post = useSelector((state) =>
     currentPostId
-      ? state.posts.find((item) => item._id === currentPostId)
+      ? state.posts.posts.find((item) => item._id === currentPostId)
       : null
   );
 
@@ -31,7 +33,7 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
         updatePost(currentPostId, { ...postData, name: user?.profile?.name })
       );
     } else {
-      dispatch(createPost({ ...postData, name: user?.profile?.name }));
+      dispatch(createPost({ ...postData, name: user?.profile?.name }, history));
     }
 
     clear();

@@ -8,6 +8,7 @@ import {
   FETCH_ALL_BY_SEARCH,
   START_LOADING,
   END_LOADING,
+  FETCH_POST,
 } from "../constants/actions";
 
 export const getPosts = (page) => async (dispatch) => {
@@ -16,6 +17,18 @@ export const getPosts = (page) => async (dispatch) => {
 
     const { data } = await api.fetchPosts(page);
     dispatch({ type: FETCH_ALL, payload: data });
+    dispatch({ type: END_LOADING });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getPost = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+
+    const { data } = await api.fetchPost(id);
+    dispatch({ type: FETCH_POST, payload: data });
     dispatch({ type: END_LOADING });
   } catch (err) {
     console.log(err);
@@ -34,13 +47,14 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   }
 };
 
-export const createPost = (newPost) => async (dispatch) => {
+export const createPost = (newPost, history) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
 
     const { data } = await api.createPost(newPost);
     dispatch({ type: CREATE, payload: data });
     dispatch({ type: END_LOADING });
+    history.push(`posts/${data._id}`);
   } catch (err) {
     console.log(err);
   }

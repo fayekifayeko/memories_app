@@ -17,6 +17,7 @@ API.interceptors.request.use((req) => {
 // export const fetchPosts = () => axios.get(postApiUrl);
 
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
+export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const createPost = (newPost) => API.post("/posts", newPost);
 export const updatePost = (id, post) => API.patch(`/posts/${id}`, post);
 export const deletePost = (id) => API.delete(`/posts/${id}`);

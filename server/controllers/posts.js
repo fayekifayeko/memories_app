@@ -23,6 +23,19 @@ export const getPosts = async (req, res) => {
         res.status(404).json({ message: error.message })
     }
 }
+
+export const getPost = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const post = await PostMessage.findById(id);
+
+        res.status(200).json(post)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 export const createPost = async (req, res) => {
     const post = req.body
     const newPost = new PostMessage({
@@ -105,6 +118,7 @@ export const likePost = async (req, res) => {
 
 export const getPostsBySearch = async (req, res) => {
     const { searchTerm, tags } = req.query
+
     try {
         const title = new RegExp(searchTerm, 'i') // ignore case
         const posts = await PostMessage.find({
