@@ -129,3 +129,28 @@ export const getPostsBySearch = async (req, res) => {
         res.status(409).json({ message: error.message })
     }
 }
+
+
+export const comment = async (req, res) => {
+    const { id: _id } = req.params
+    const {comment} = req.body;
+
+    if (!req.userId)
+
+        return res.status(401).json({ message: 'You are not authenticated' })
+
+    if (!mongoose.Types.ObjectId.isValid(_id))
+        return res.status(404).send('No post with this id')
+    try {
+        const post = await PostMessage.findById(_id)
+        post.comments.push(comment);
+        
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+            new: true,
+        })
+
+        res.status(201).json(updatedPost)
+    } catch (error) {
+        res.status(409).json({ message: error.message })
+    }
+}

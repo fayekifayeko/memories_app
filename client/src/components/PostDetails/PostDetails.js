@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import useStyles from "./styles";
 import { getPost, getPostsBySearch } from "../../actions/posts";
+import CommentsSection from "./CommentsSection";
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -70,9 +71,7 @@ const PostDetails = () => {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentsSection post={post} />
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
@@ -96,7 +95,7 @@ const PostDetails = () => {
             ({ title, name, message, likes, selectedFile, _id }) => (
               <div
                 style={{ margin: "20px", cursor: "pointer" }}
-                onClick={()=>history.push(`/posts/${_id}`)}
+                onClick={() => history.push(`/posts/${_id}`)}
                 key={_id}
               >
                 <Typography gutterBottom variant="h6">

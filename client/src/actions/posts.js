@@ -9,7 +9,18 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_POST,
+  POST_COMMENT,
 } from "../constants/actions";
+
+export const postComment = (comment, postId) => async (dispatch) => {
+  try {
+    const { data } = await api.postComment(comment, postId);
+    dispatch({ type: POST_COMMENT, payload: data });
+    return data.comments;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const getPosts = (page) => async (dispatch) => {
   try {

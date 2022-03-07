@@ -8,6 +8,7 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_POST,
+  POST_COMMENT,
 } from "../constants/actions";
 
 /* export default (state = [], action) => {
@@ -72,6 +73,14 @@ export default (state = { posts: [], isLoading: true }, action) => {
       return { ...state, isLoading: true };
     case END_LOADING:
       return { ...state, isLoading: false };
+
+    case POST_COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((item) =>
+          item._id === action.payload._id ? action.payload : item
+        ),
+      };
 
     default:
       return state;
