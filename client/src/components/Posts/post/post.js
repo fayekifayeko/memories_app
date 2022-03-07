@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useStyles from "./styles.js";
 import {
   Card,
@@ -18,28 +18,36 @@ import { deletePost, likePost } from "../../../actions/posts";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import { useHistory } from "react-router-dom";
 
-
 const Post = ({ post, setCurrentPostId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
+  const [likes, setLikes] = useState(post?.likes); // improve like&unlike performance instead of waiting for api resp
+  const userId = user?.profile?.googleId || user?.profile?._id;
 
+  const hasUserLiked = post.likes.find((item) => item === userId);
+  const handleLike = () => {
+    dispatch(likePost(post._id));
+    if (hasUserLiked) {
+      setLikes(post.likes.filter((item) => item !== userId));
+    } else {
+      setLikes([...likes, user.profile._id]);
+    }
+  };
   const Likes = () => {
-    if (post?.likes?.length > 0) {
-      return post.likes.find(
-        (item) => item === (user?.profile?.googleId || user?.profile?._id)
-      ) ? (
+    if (likes?.length > 0) {
+      return hasUserLiked ? (
         <>
           <ThumbUpAltIcon fontSize="small" /> &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length - 1} others`
+            : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -51,9 +59,10 @@ const Post = ({ post, setCurrentPostId }) => {
       </>
     );
   };
+
   const openPostDetails = () => {
     history.push(`/posts/${post._id}`);
-  }
+  };
 
   return (
     <Card className={classes.card} elevation={6}>
@@ -106,9 +115,11 @@ const Post = ({ post, setCurrentPostId }) => {
           disabled={!user?.profile}
           size="small"
           color="primary"
-          onClick={() => {
+          /*  onClick={() => {
             dispatch(likePost(post._id));
-          }}
+          }} */
+
+          onClick={handleLike}
         >
           <Likes />
         </Button>

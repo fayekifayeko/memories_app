@@ -17,8 +17,8 @@ const postSchema = mongoose.Schema({
     },
     comments: {
         type: [String],
-        default: [], 
-    }
+        default: [],
+    },
 })
 
 const PostMessage = mongoose.model('PostMessage', postSchema)

@@ -9,13 +9,13 @@ import {
     likePost,
     getPostsBySearch,
     getPost,
-    comment
+    comment,
 } from '../controllers/posts.js'
 
 const router = express.Router()
 
-router.get('/search', getPostsBySearch);
-router.get('/', getPosts); // no need to be authenticated
+router.get('/search', getPostsBySearch)
+router.get('/', getPosts) // no need to be authenticated
 router.get('/:id', getPost)
 router.post('/', auth, createPost)
 router.post('/:id/comment', auth, comment)

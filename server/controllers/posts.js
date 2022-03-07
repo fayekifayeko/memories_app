@@ -4,7 +4,7 @@ import PostMessage from '../models/postMessage.js'
 export const getPosts = async (req, res) => {
     try {
         const { page } = req.query
-        
+
         const postsPerPage = 2
         const skipNumber = (Number(page) - 1) * postsPerPage
         const total = await PostMessage.countDocuments({})
@@ -16,7 +16,7 @@ export const getPosts = async (req, res) => {
 
         res.status(200).json({
             data: posts,
-            numberOfPages: Math.ceil((total/postsPerPage)),
+            numberOfPages: Math.ceil(total / postsPerPage),
             currentPage: Number(page),
         })
     } catch (error) {
@@ -28,7 +28,7 @@ export const getPost = async (req, res) => {
     try {
         const { id } = req.params
 
-        const post = await PostMessage.findById(id);
+        const post = await PostMessage.findById(id)
 
         res.status(200).json(post)
     } catch (error) {
@@ -130,21 +130,19 @@ export const getPostsBySearch = async (req, res) => {
     }
 }
 
-
 export const comment = async (req, res) => {
     const { id: _id } = req.params
-    const {comment} = req.body;
+    const { comment } = req.body
 
     if (!req.userId)
-
         return res.status(401).json({ message: 'You are not authenticated' })
 
     if (!mongoose.Types.ObjectId.isValid(_id))
         return res.status(404).send('No post with this id')
     try {
         const post = await PostMessage.findById(_id)
-        post.comments.push(comment);
-        
+        post.comments.push(comment)
+
         const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
             new: true,
         })

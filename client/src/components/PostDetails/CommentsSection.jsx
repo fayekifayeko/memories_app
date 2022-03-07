@@ -24,7 +24,7 @@ const CommentsSection = ({ post }) => {
   };
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <div className={classes.commentsOuterContainer}>
         <div className={classes.commentsInnerContainer}>
           <Typography gutterBottom variant="h6">
